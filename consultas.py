@@ -19,3 +19,9 @@ class query():
 		sql = "SELECT * FROM empleados ORDER BY ID ASC"
 		results = self.ejecutar_consultar(sql)
 		return results
+		
+	def delete(self,email):
+		sql = "DELETE FROM empleados WHERE Email=?"
+		parametros = (email,)
+		results = self.ejecutar_consultar(sql,parametros)
+	

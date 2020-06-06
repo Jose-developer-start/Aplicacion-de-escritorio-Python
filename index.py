@@ -27,6 +27,10 @@ class app:
 		self.tabla0.heading("#0",text="Nombre",anchor='center')
 		self.tabla0.heading("#1",text="Correo",anchor='center')
 		self.mostrar()
+		#CREANDO BOTON PARA ELIMINAR
+		ttk.Button(text="Eliminar", command=self.eliminar).grid(row=5, column = 0, sticky = W + E)
+		ttk.Button(text="Editar").grid(row=5, column = 1, sticky = W + E)
+
 	def guardar(self):
 		name = self.name.get()
 		email = self.email.get()
@@ -47,6 +51,12 @@ class app:
 		rows = self.query.read()
 		for row in rows:
 			self.tabla0.insert('',END, text=row[1],value=row[2])
+
+	def eliminar(self):
+		email = self.tabla0.item(self.tabla0.selection())['values'][0]
+		self.query.delete(email)
+		self.mostrar()
+
 
 if __name__=="__main__":
 	root = Tk()
