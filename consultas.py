@@ -14,3 +14,8 @@ class query():
 		sql = "INSERT INTO empleados(Name,Email) VALUES(?,?)"
 		parametros =(name,email)
 		self.ejecutar_consultar(sql, parametros)
+
+	def read(self):
+		sql = "SELECT * FROM empleados ORDER BY ID ASC"
+		results = self.ejecutar_consultar(sql)
+		return results
