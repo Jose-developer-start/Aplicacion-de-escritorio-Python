@@ -24,4 +24,9 @@ class query():
 		sql = "DELETE FROM empleados WHERE Email=?"
 		parametros = (email,)
 		results = self.ejecutar_consultar(sql,parametros)
+
+	def update(self,nombre_nuevo,correo_nuevo,name,email):#Le pasamos los 4 parametros para actualizar el registro
+		sql = "UPDATE empleados SET Name=?,Email=? WHERE Name=? AND Email=?"
+		parametros = (nombre_nuevo,correo_nuevo,name,email)
+		self.ejecutar_consultar(sql,parametros)
 	

@@ -29,7 +29,7 @@ class app:
 		self.mostrar()
 		#CREANDO BOTON PARA ELIMINAR
 		ttk.Button(text="Eliminar", command=self.eliminar).grid(row=5, column = 0, sticky = W + E)
-		ttk.Button(text="Editar").grid(row=5, column = 1, sticky = W + E)
+		ttk.Button(text="Editar",command=self.actualizar).grid(row=5, column = 1, sticky = W + E)
 
 	def guardar(self):
 		name = self.name.get()
@@ -53,10 +53,45 @@ class app:
 			self.tabla0.insert('',END, text=row[1],value=row[2])
 
 	def eliminar(self):
-		email = self.tabla0.item(self.tabla0.selection())['values'][0]
-		self.query.delete(email)
-		self.mostrar()
+		try:
+			email = self.tabla0.item(self.tabla0.selection())['values'][0]
+			self.query.delete(email)
+			self.mostrar()
+		except IndexError:
+			message.showinfo(message="Por favor selecciona un dato de la tabla", title="Error")
+	#Funcion que contiene mi ventana secundaria
+	def actualizar(self):
+		try:
+			self.previous_name = self.tabla0.item(self.tabla0.selection())['text']
+			self.previous_email = self.tabla0.item(self.tabla0.selection())['values'][0]
+			name_set = StringVar()
+			name_set.set(self.previous_name)
+			email_set = StringVar()
+			email_set.set(self.previous_email)
 
+			self.edit_window = Toplevel()
+			self.edit_window.title("Actualizar")
+			frame = LabelFrame(self.edit_window, text='Actualizar')
+			frame.grid(row=0, column=0, ipadx=20)
+			Label(frame, text="Nombre: ").grid(row=1, column=1)
+			self.new_name = Entry(frame, textvar=name_set)
+			self.new_name.grid(row=1,column=2,ipadx=20)
+			Label(frame, text='Email: ').grid(row=2, column=1)
+
+			self.new_email = Entry(frame, textvar=email_set)
+			self.new_email.grid(row=2,column=2,ipadx=20)
+			ttk.Button(frame, text="Guardar", command=self.edit).grid(row=3, columnspan=2, sticky=W + E)
+		except IndexError:
+			message.showinfo(message="Por favor selecciona un dato de la tabla", title="Error")
+	#Funcion que permite hacer la actualización
+	def edit(self):
+		self.nombre=self.new_name.get()
+		self.correo = self.new_email.get()
+
+		if(self.nombre !='' and self.correo !=''):
+			self.query.update(self.nombre,self.correo,self.previous_name,self.previous_email)
+			self.mostrar()
+			self.edit_window.destroy()
 
 if __name__=="__main__":
 	root = Tk()
